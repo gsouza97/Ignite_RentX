@@ -29,3 +29,10 @@ export const TotalCars = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_400};
   font-size: ${RFValue(15)}px;
 `;
+
+export const CarList = styled.FlatList.attrs({
+  contentContainerStyle: {
+    padding: 24,
+  },
+  showsVerticalScrollIndicator: false,
+})``;
