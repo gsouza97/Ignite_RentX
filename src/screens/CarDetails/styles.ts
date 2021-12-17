@@ -15,7 +15,7 @@ export const Header = styled.View`
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 18px;
+  margin-top: 60px;
   margin-left: 24px;
 
   position: absolute;

@@ -27,11 +27,28 @@ import {
   Footer,
 } from "./styles";
 import { Button } from "../../components/Button";
+import {
+  useNavigation,
+  NavigationProp,
+  ParamListBase,
+} from "@react-navigation/native";
+import { StatusBar } from "react-native";
 
 export function CarDetails() {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  function handleConfirmRental() {
+    navigation.navigate("Schedule");
+  }
+
   return (
-    <SafeArea>
-      <Container>
+    <Container>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <SafeArea>
         <Header>
           <BackButton onPress={() => {}} />
         </Header>
@@ -74,9 +91,12 @@ export function CarDetails() {
         </Content>
 
         <Footer>
-          <Button title="Escolher o período de aluguel" />
+          <Button
+            title="Escolher período de aluguel"
+            onPress={handleConfirmRental}
+          />
         </Footer>
-      </Container>
-    </SafeArea>
+      </SafeArea>
+    </Container>
   );
 }

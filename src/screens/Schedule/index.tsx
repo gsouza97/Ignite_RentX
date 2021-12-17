@@ -19,9 +19,19 @@ import {
 import { StatusBar } from "react-native";
 import { Button } from "../../components/Button";
 import { Calendar } from "../../components/Calendar";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 export function Schedule() {
   const theme = useTheme();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  function handleConfirmRental() {
+    navigation.navigate("ScheduleDetails");
+  }
 
   return (
     <Container>
@@ -33,37 +43,40 @@ export function Schedule() {
       <Header>
         <SafeArea>
           <BackButton onPress={() => {}} color={theme.colors.shape} />
+
+          <Title>
+            Escolha uma {"\n"}data de início e {"\n"}fim do aluguel
+          </Title>
+
+          <RentalPeriod>
+            <DateInfo>
+              <DateTitle>de</DateTitle>
+              <DateValueContainer selected={false}>
+                <DateValue>18/06/2021</DateValue>
+              </DateValueContainer>
+            </DateInfo>
+
+            <ArrowSvg />
+
+            <DateInfo>
+              <DateTitle>até</DateTitle>
+              <DateValueContainer selected={false}>
+                <DateValue>18/06/2021</DateValue>
+              </DateValueContainer>
+            </DateInfo>
+          </RentalPeriod>
         </SafeArea>
-        <Title>
-          Escolha uma {"\n"}data de início e {"\n"}fim do aluguel
-        </Title>
-
-        <RentalPeriod>
-          <DateInfo>
-            <DateTitle>de</DateTitle>
-            <DateValueContainer selected={false}>
-              <DateValue>18/06/2021</DateValue>
-            </DateValueContainer>
-          </DateInfo>
-
-          <ArrowSvg />
-
-          <DateInfo>
-            <DateTitle>até</DateTitle>
-            <DateValueContainer selected={false}>
-              <DateValue>18/06/2021</DateValue>
-            </DateValueContainer>
-          </DateInfo>
-        </RentalPeriod>
       </Header>
 
       <Content>
         <Calendar />
       </Content>
 
-      <Footer>
-        <Button title="Confirmar" />
-      </Footer>
+      <SafeArea>
+        <Footer>
+          <Button title="Confirmar" onPress={handleConfirmRental} />
+        </Footer>
+      </SafeArea>
     </Container>
   );
 }

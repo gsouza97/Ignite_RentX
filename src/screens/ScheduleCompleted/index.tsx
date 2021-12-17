@@ -4,14 +4,29 @@ import { Container, Content, Title, Message, SafeArea, Footer } from "./styles";
 
 import LogoSvg from "../../assets/logo_background_gray.svg";
 import DoneSvg from "../../assets/done.svg";
-import { Dimensions } from "react-native";
+import { Dimensions, StatusBar } from "react-native";
 import { ConfirmButton } from "../../components/ConfirmButton";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 export function ScheduleCompleted() {
   const width = Dimensions.get("window").width;
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  function handleConfirm() {
+    navigation.navigate("Home");
+  }
 
   return (
     <Container>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <SafeArea>
         <LogoSvg width={width} />
       </SafeArea>
@@ -27,7 +42,7 @@ export function ScheduleCompleted() {
 
       <SafeArea>
         <Footer>
-          <ConfirmButton title="Ok" />
+          <ConfirmButton title="Ok" onPress={handleConfirm} />
         </Footer>
       </SafeArea>
     </Container>

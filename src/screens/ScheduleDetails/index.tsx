@@ -39,13 +39,29 @@ import {
 import { Button } from "../../components/Button";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
+import { StatusBar } from "react-native";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 export function ScheduleDetails() {
   const theme = useTheme();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  function handleConfirmRental() {
+    navigation.navigate("ScheduleCompleted");
+  }
 
   return (
-    <SafeArea>
-      <Container>
+    <Container>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent
+      />
+      <SafeArea>
         <Header>
           <BackButton onPress={() => {}} />
         </Header>
@@ -116,9 +132,13 @@ export function ScheduleDetails() {
         </Content>
 
         <Footer>
-          <Button title="Alugar agora" color={theme.colors.success} />
+          <Button
+            title="Alugar agora"
+            color={theme.colors.success}
+            onPress={handleConfirmRental}
+          />
         </Footer>
-      </Container>
-    </SafeArea>
+      </SafeArea>
+    </Container>
   );
 }

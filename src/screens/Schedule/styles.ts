@@ -71,6 +71,7 @@ export const Content = styled.ScrollView.attrs({
 })``;
 
 export const Footer = styled.View`
-  padding-bottom: 8px;
-  background-color: ${({ theme }) => theme.colors.main};
+  width: 100%;
+
+  padding: 0 24px;
 `;
