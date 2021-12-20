@@ -19,19 +19,8 @@ export function Home() {
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const carData = {
-    brand: "Audi",
-    name: "RS 5 Coupé",
-    rent: {
-      period: "ao dia",
-      price: 120,
-    },
-    thumbnail:
-      "https://png.monster/wp-content/uploads/2020/11/2018-audi-rs5-4wd-coupe-angular-front-5039562b.png",
-  };
-
-  function handleCarDetails() {
-    navigation.navigate("CarDetails");
+  function handleCarDetails(car: CarDTO) {
+    navigation.navigate("CarDetails", { car });
   }
 
   // Chamada a API para carregar os carros
@@ -61,7 +50,7 @@ export function Home() {
       <Header>
         <HeaderContent>
           <Logo height={RFValue(12)} width={RFValue(108)} />
-          <TotalCars>Total de 12 carros</TotalCars>
+          <TotalCars>Total de {cars.length} carros</TotalCars>
         </HeaderContent>
       </Header>
 
@@ -72,7 +61,7 @@ export function Home() {
           data={cars}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
-            <Car data={item} onPress={handleCarDetails} />
+            <Car data={item} onPress={() => handleCarDetails(item)} />
           )}
         ></CarList>
       )}
