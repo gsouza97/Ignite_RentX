@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "react-native";
 
-import { Container, HeaderContent, Header, TotalCars, CarList } from "./styles";
+import {
+  Container,
+  HeaderContent,
+  Header,
+  TotalCars,
+  CarList,
+  MyCarsButton,
+} from "./styles";
 import Logo from "../../assets/logo.svg";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Car } from "../../components/Car";
@@ -13,14 +20,21 @@ import {
 } from "@react-navigation/native";
 import { CarDTO } from "../../dtos/CarDTO";
 import { Loading } from "../../components/Loading";
+import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
 
 export function Home() {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const [cars, setCars] = useState<CarDTO[]>([]);
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
 
   function handleCarDetails(car: CarDTO) {
     navigation.navigate("CarDetails", { car });
+  }
+
+  function handleOpenMyCars() {
+    navigation.navigate("MyCars");
   }
 
   // Chamada a API para carregar os carros
@@ -65,6 +79,14 @@ export function Home() {
           )}
         ></CarList>
       )}
+
+      <MyCarsButton onPress={handleOpenMyCars}>
+        <Ionicons
+          name="ios-car-sport"
+          size={32}
+          color={theme.colors.background_primary}
+        />
+      </MyCarsButton>
     </Container>
   );
 }
