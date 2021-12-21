@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "styled-components";
 import { BackButton } from "../../components/BackButton";
 import ArrowSvg from "../../assets/arrow.svg";
+import { format } from "date-fns";
 
 import {
   Container,
@@ -16,21 +17,87 @@ import {
   Content,
   Footer,
 } from "./styles";
-import { StatusBar } from "react-native";
+import { Alert, StatusBar } from "react-native";
 import { Button } from "../../components/Button";
-import { Calendar } from "../../components/Calendar";
+import {
+  Calendar,
+  DayProps,
+  generateInterval,
+  MarkedDateProps,
+} from "../../components/Calendar";
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
+  useRoute,
 } from "@react-navigation/native";
+import { getPlatformDate } from "../../utils/getPlatformDate";
+import { CarDTO } from "../../dtos/CarDTO";
+
+interface RentalPeriod {
+  startFormatted: string;
+  endFormatted: string;
+}
+
+interface Params {
+  car: CarDTO;
+}
 
 export function Schedule() {
+  const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>(
+    {} as DayProps
+  );
+  const [markedDates, setMarkedDates] = useState<MarkedDateProps>(
+    {} as MarkedDateProps
+  );
+  const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>(
+    {} as RentalPeriod
+  );
+
+  const route = useRoute();
+  const { car } = route.params as Params;
+
   const theme = useTheme();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   function handleConfirmRental() {
-    navigation.navigate("ScheduleDetails");
+    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
+      Alert.alert("Selecione uma data válida.");
+    } else {
+      navigation.navigate("ScheduleDetails", {
+        car,
+        dates: Object.keys(markedDates),
+      });
+    }
+  }
+
+  function handleBack() {
+    navigation.goBack();
+  }
+
+  function handleChangeDate(date: DayProps) {
+    let start = !lastSelectedDate.timestamp ? date : lastSelectedDate;
+    let end = date;
+
+    if (start.timestamp > end.timestamp) {
+      start = end;
+      end = start;
+    }
+
+    setLastSelectedDate(end);
+    const interval = generateInterval(start, end);
+    setMarkedDates(interval);
+
+    const firstDate = Object.keys(interval)[0];
+    const endDate = Object.keys(interval)[Object.keys(interval).length - 1];
+
+    setRentalPeriod({
+      startFormatted: format(
+        getPlatformDate(new Date(firstDate)),
+        "dd/MM/yyyy"
+      ),
+      endFormatted: format(getPlatformDate(new Date(endDate)), "dd/MM/yyyy"),
+    });
   }
 
   return (
@@ -42,7 +109,7 @@ export function Schedule() {
       />
       <Header>
         <SafeArea>
-          <BackButton onPress={() => {}} color={theme.colors.shape} />
+          <BackButton onPress={handleBack} color={theme.colors.shape} />
 
           <Title>
             Escolha uma {"\n"}data de início e {"\n"}fim do aluguel
@@ -51,8 +118,8 @@ export function Schedule() {
           <RentalPeriod>
             <DateInfo>
               <DateTitle>de</DateTitle>
-              <DateValueContainer selected={false}>
-                <DateValue>18/06/2021</DateValue>
+              <DateValueContainer selected={!!rentalPeriod.startFormatted}>
+                <DateValue>{rentalPeriod.startFormatted}</DateValue>
               </DateValueContainer>
             </DateInfo>
 
@@ -60,8 +127,8 @@ export function Schedule() {
 
             <DateInfo>
               <DateTitle>até</DateTitle>
-              <DateValueContainer selected={false}>
-                <DateValue>18/06/2021</DateValue>
+              <DateValueContainer selected={!!rentalPeriod.endFormatted}>
+                <DateValue>{rentalPeriod.endFormatted}</DateValue>
               </DateValueContainer>
             </DateInfo>
           </RentalPeriod>
@@ -69,7 +136,7 @@ export function Schedule() {
       </Header>
 
       <Content>
-        <Calendar />
+        <Calendar markedDates={markedDates} onDayPress={handleChangeDate} />
       </Content>
 
       <SafeArea>
