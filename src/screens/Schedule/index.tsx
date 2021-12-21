@@ -17,7 +17,7 @@ import {
   Content,
   Footer,
 } from "./styles";
-import { Alert, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
 import { Button } from "../../components/Button";
 import {
   Calendar,
@@ -61,14 +61,10 @@ export function Schedule() {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   function handleConfirmRental() {
-    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
-      Alert.alert("Selecione uma data válida.");
-    } else {
-      navigation.navigate("ScheduleDetails", {
-        car,
-        dates: Object.keys(markedDates),
-      });
-    }
+    navigation.navigate("ScheduleDetails", {
+      car,
+      dates: Object.keys(markedDates),
+    });
   }
 
   function handleBack() {
@@ -141,7 +137,13 @@ export function Schedule() {
 
       <SafeArea>
         <Footer>
-          <Button title="Confirmar" onPress={handleConfirmRental} />
+          <Button
+            title="Confirmar"
+            onPress={handleConfirmRental}
+            enabled={
+              !!rentalPeriod.startFormatted && !!rentalPeriod.endFormatted
+            }
+          />
         </Footer>
       </SafeArea>
     </Container>
