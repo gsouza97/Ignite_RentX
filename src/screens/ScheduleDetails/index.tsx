@@ -79,10 +79,21 @@ export function ScheduleDetails() {
     ];
 
     try {
+      await api.post(`/schedules_byuser`, {
+        user_id: 1,
+        car: car,
+        start: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
+        end: format(
+          getPlatformDate(new Date(dates[dates.length - 1])),
+          "dd/MM/yyyy"
+        ),
+      });
+
       await api.put(`/schedules_bycars/${car.id}`, {
         id: car.id,
         unavailable_dates: unavailable_dates,
       });
+
       navigation.navigate("ScheduleCompleted");
     } catch (error) {
       console.log(error);
