@@ -15,6 +15,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedGestureHandler,
+  withSpring,
 } from "react-native-reanimated";
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
@@ -50,7 +51,10 @@ export function Home() {
       positionX.value = ctx.positionX + event.translationX;
       positionY.value = ctx.positionY + event.translationY;
     },
-    onEnd() {},
+    onEnd() {
+      positionX.value = withSpring(0);
+      positionY.value = withSpring(0);
+    },
   });
 
   function handleCarDetails(car: CarDTO) {
