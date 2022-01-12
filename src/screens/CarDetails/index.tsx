@@ -8,7 +8,6 @@ import {
   SafeArea,
   Header,
   CarImages,
-  Content,
   Details,
   Description,
   Brand,
@@ -30,6 +29,13 @@ import {
 import { StatusBar } from "react-native";
 import { CarDTO } from "../../dtos/CarDTO";
 import { getAccessoryIcon } from "../../utils/getAccessoryIcon";
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+} from "react-native-reanimated";
 
 interface Params {
   car: CarDTO;
@@ -39,6 +45,29 @@ export function CarDetails() {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const route = useRoute();
   const { car } = route.params as Params;
+
+  const scrollY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    scrollY.value = event.contentOffset.y;
+    console.log(event.contentOffset.y);
+  });
+
+  const headerStyleAnimation = useAnimatedStyle(() => {
+    return {
+      height: interpolate(
+        scrollY.value,
+        [0, 200],
+        [200, 50],
+        Extrapolate.CLAMP
+      ),
+    };
+  });
+
+  const sliderCarsStyleAnimation = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollY.value, [0, 150], [1, 0], Extrapolate.CLAMP),
+    };
+  });
 
   function handleConfirmRental() {
     navigation.navigate("Schedule", { car });
@@ -55,16 +84,29 @@ export function CarDetails() {
         backgroundColor="transparent"
         translucent
       />
+
       <SafeArea>
-        <Header>
-          <BackButton onPress={handleBack} />
-        </Header>
+        <Animated.View style={[headerStyleAnimation]}>
+          <Header style={{ zIndex: 2 }}>
+            <BackButton onPress={handleBack} />
+          </Header>
 
-        <CarImages>
-          <ImageSlider imagesUrl={car.photos} />
-        </CarImages>
+          <Animated.View style={[sliderCarsStyleAnimation]}>
+            <CarImages>
+              <ImageSlider imagesUrl={car.photos} />
+            </CarImages>
+          </Animated.View>
+        </Animated.View>
 
-        <Content>
+        <Animated.ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 24,
+            alignItems: "center",
+          }}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
+        >
           <Details>
             <Description>
               <Brand>{car.brand}</Brand>
@@ -88,7 +130,12 @@ export function CarDetails() {
           </Accessories>
 
           <About>{car.about}</About>
-        </Content>
+          <About>{car.about}</About>
+          <About>{car.about}</About>
+          <About>{car.about}</About>
+          <About>{car.about}</About>
+          <About>{car.about}</About>
+        </Animated.ScrollView>
 
         <Footer>
           <Button
