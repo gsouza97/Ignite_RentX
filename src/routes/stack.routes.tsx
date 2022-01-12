@@ -19,7 +19,11 @@ export function StackRoutes() {
         component={Splash}
         options={{ headerShown: false }}
       />
-      <Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <Screen
         name="CarDetails"
         component={CarDetails}

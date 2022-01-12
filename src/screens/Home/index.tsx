@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, BackHandler } from "react-native";
 
 import { Container, HeaderContent, Header, TotalCars, CarList } from "./styles";
 import Logo from "../../assets/logo.svg";
@@ -76,6 +76,17 @@ export function Home() {
     fetchCars();
   }, []);
 
+  // Effect para previnir voltar ao splash no android
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        return true;
+      }
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <Container>
       <StatusBar
@@ -87,7 +98,7 @@ export function Home() {
       <Header>
         <HeaderContent>
           <Logo height={RFValue(12)} width={RFValue(108)} />
-          <TotalCars>Total de {cars.length} carros</TotalCars>
+          {!loading && <TotalCars>Total de {cars.length} carros</TotalCars>}
         </HeaderContent>
       </Header>
 
