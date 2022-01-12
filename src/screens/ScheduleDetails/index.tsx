@@ -46,6 +46,7 @@ import {
 } from "@react-navigation/native";
 import api from "../../services/api";
 import { Loading } from "../../components/Loading";
+import { AnimatedLoading } from "../../components/AnimatedLoading";
 
 interface Params {
   car: CarDTO;
@@ -125,7 +126,7 @@ export function ScheduleDetails() {
         translucent
       />
       {isLoading ? (
-        <Loading />
+        <AnimatedLoading />
       ) : (
         <SafeArea>
           <Header>

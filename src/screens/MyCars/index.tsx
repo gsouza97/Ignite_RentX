@@ -29,6 +29,7 @@ import {
   CarFooterDate,
 } from "./styles";
 import { Loading } from "../../components/Loading";
+import { AnimatedLoading } from "../../components/AnimatedLoading";
 
 interface CarProps {
   id: string;
@@ -78,7 +79,7 @@ export function MyCars() {
       </Header>
 
       {isLoading ? (
-        <Loading />
+        <AnimatedLoading />
       ) : (
         <Content>
           <Appointments>

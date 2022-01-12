@@ -24,6 +24,7 @@ import { Loading } from "../../components/Loading";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components";
 import { RectButton, PanGestureHandler } from "react-native-gesture-handler";
+import { AnimatedLoading } from "../../components/AnimatedLoading";
 
 export function Home() {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -103,7 +104,7 @@ export function Home() {
       </Header>
 
       {loading ? (
-        <Loading />
+        <AnimatedLoading />
       ) : (
         <CarList
           data={cars}
