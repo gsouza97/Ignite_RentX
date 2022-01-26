@@ -4,7 +4,6 @@ import styled from "styled-components/native";
 
 interface ButtonProps {
   color: string;
-  light: boolean;
 }
 
 interface TitleProps {

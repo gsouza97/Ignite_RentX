@@ -1,17 +1,13 @@
 import React from "react";
 import { ActivityIndicator } from "react-native";
-import {
-  RectButtonProperties,
-  RectButtonProps,
-} from "react-native-gesture-handler";
+import { RectButtonProps } from "react-native-gesture-handler";
 import { useTheme } from "styled-components";
 
 import { Container, Title } from "./styles";
 
-interface ButtonProps extends RectButtonProperties {
+interface ButtonProps extends RectButtonProps {
   title: string;
   color?: string;
-  enabled?: boolean;
   loading?: boolean;
   light?: boolean;
 }
@@ -29,7 +25,6 @@ export function Button({
 
   return (
     <Container
-      light={light}
       color={color!}
       enabled={enabled}
       style={{ opacity: enabled ? 1 : 0.5 }}
