@@ -21,11 +21,17 @@ import {
   Footer,
 } from "./styles";
 import * as Yup from "yup";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const theme = useTheme();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   async function handleSignIn() {
     try {
@@ -50,6 +56,10 @@ export function SignIn() {
         );
       }
     }
+  }
+
+  function handleNewAccount() {
+    navigation.navigate("SignUpFirstStep");
   }
 
   return (
@@ -98,9 +108,9 @@ export function SignIn() {
                 title="Criar conta gratuita"
                 color={theme.colors.background_secondary}
                 light
-                enabled={false}
+                enabled={true}
                 loading={false}
-                onPress={() => {}}
+                onPress={handleNewAccount}
               />
             </Footer>
           </Container>
