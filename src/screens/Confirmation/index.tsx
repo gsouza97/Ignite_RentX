@@ -10,14 +10,23 @@ import {
   NavigationProp,
   ParamListBase,
   useNavigation,
+  useRoute,
 } from "@react-navigation/native";
 
-export function ScheduleCompleted() {
+interface Params {
+  title: string;
+  message: string;
+  nextScreenRoute: string;
+}
+
+export function Confirmation() {
   const width = Dimensions.get("window").width;
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const route = useRoute();
+  const { title, message, nextScreenRoute } = route.params as Params;
 
   function handleConfirm() {
-    navigation.navigate("Home");
+    navigation.navigate(nextScreenRoute);
   }
 
   return (
@@ -33,11 +42,8 @@ export function ScheduleCompleted() {
 
       <Content>
         <DoneSvg />
-        <Title>Carro Alugado</Title>
-        <Message>
-          Agora voce só precisa ir {"\n"}até a concessionária da RENTX {"\n"}
-          pegar o seu automóvel.
-        </Message>
+        <Title>{title}</Title>
+        <Message>{message}</Message>
       </Content>
 
       <SafeArea>
