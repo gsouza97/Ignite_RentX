@@ -4,6 +4,11 @@ import styled from "styled-components/native";
 
 interface ButtonProps {
   color: string;
+  light: boolean;
+}
+
+interface TitleProps {
+  light: boolean;
 }
 
 export const Container = styled(RectButton)<ButtonProps>`
@@ -15,10 +20,12 @@ export const Container = styled(RectButton)<ButtonProps>`
   align-items: center;
 
   padding: 19px;
+  margin-bottom: 8px;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text<TitleProps>`
   font-family: ${({ theme }) => theme.fonts.primary_500};
-  color: ${({ theme }) => theme.colors.background_secondary};
+  color: ${({ theme, light }) =>
+    light ? theme.colors.header : theme.colors.shape};
   font-size: ${RFValue(15)}px;
 `;
