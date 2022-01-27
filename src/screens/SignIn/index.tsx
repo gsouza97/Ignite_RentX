@@ -26,12 +26,14 @@ import {
   ParamListBase,
   useNavigation,
 } from "@react-navigation/native";
+import { useAuth } from "../../hooks/useAuth";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const theme = useTheme();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const { signIn } = useAuth();
 
   async function handleSignIn() {
     try {
@@ -46,6 +48,7 @@ export function SignIn() {
       Alert.alert("Tudo certo!");
 
       // Fazer Login
+      await signIn({ email, password });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         Alert.alert("Opa", error.message);
