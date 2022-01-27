@@ -66,7 +66,7 @@ export function SignUpFirstStep() {
             <Header>
               <BackButton onPress={handleBack} />
               <Steps>
-                <Bullet />
+                <Bullet active />
                 <Bullet />
               </Steps>
             </Header>

@@ -16,6 +16,7 @@ import { BackButton } from "../../../components/BackButton";
 import { Bullet } from "../../../components/Bullet";
 import { Button } from "../../../components/Button";
 import { PasswordInput } from "../../../components/PasswordInput";
+import api from "../../../services/api";
 
 import {
   Container,
@@ -58,13 +59,22 @@ export function SignUpSecondStep() {
       return Alert.alert("As senhas não conferem");
     }
 
-    // Enviar para API e cadastrar.
+    try {
+      await api.post("/users", {
+        name: user.name,
+        email: user.email,
+        driver_license: user.driverLicense,
+        password,
+      });
 
-    navigation.navigate("Confirmation", {
-      nextScreenRoute: "SignIn",
-      title: "Conta criada!",
-      message: `Agora é só fazer login\ne aproveitar.`,
-    });
+      navigation.navigate("Confirmation", {
+        nextScreenRoute: "SignIn",
+        title: "Conta criada!",
+        message: `Agora é só fazer login\ne aproveitar.`,
+      });
+    } catch (error) {
+      return Alert.alert("Opa", "Não foi possível cadastrar");
+    }
   }
 
   return (
@@ -76,7 +86,7 @@ export function SignUpSecondStep() {
               <BackButton onPress={handleBack} />
               <Steps>
                 <Bullet />
-                <Bullet />
+                <Bullet active />
               </Steps>
             </Header>
 
